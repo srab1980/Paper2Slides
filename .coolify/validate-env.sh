@@ -19,10 +19,10 @@ check_var() {
     if [ -z "$var_value" ]; then
         if [ "$required" = "true" ]; then
             echo "❌ ERROR: $var_name is not set (REQUIRED)"
-            ((ERRORS++))
+            ERRORS=$((ERRORS + 1))
         else
             echo "⚠️  WARNING: $var_name is not set (OPTIONAL)"
-            ((WARNINGS++))
+            WARNINGS=$((WARNINGS + 1))
         fi
         return 1
     else
@@ -36,26 +36,26 @@ echo "📝 Checking Required Environment Variables..."
 echo "----------------------------------------------"
 
 # Required LLM variables
-check_var "RAG_LLM_API_KEY" "$RAG_LLM_API_KEY" "true"
-check_var "RAG_LLM_BASE_URL" "$RAG_LLM_BASE_URL" "true"
+check_var "RAG_LLM_API_KEY" "${RAG_LLM_API_KEY:-}" "true" || true
+check_var "RAG_LLM_BASE_URL" "${RAG_LLM_BASE_URL:-}" "true" || true
 
 # Required Image Generation variables
-check_var "IMAGE_GEN_PROVIDER" "$IMAGE_GEN_PROVIDER" "true"
-check_var "IMAGE_GEN_API_KEY" "$IMAGE_GEN_API_KEY" "true"
-check_var "IMAGE_GEN_BASE_URL" "$IMAGE_GEN_BASE_URL" "true"
-check_var "IMAGE_GEN_MODEL" "$IMAGE_GEN_MODEL" "true"
+check_var "IMAGE_GEN_PROVIDER" "${IMAGE_GEN_PROVIDER:-}" "true" || true
+check_var "IMAGE_GEN_API_KEY" "${IMAGE_GEN_API_KEY:-}" "true" || true
+check_var "IMAGE_GEN_BASE_URL" "${IMAGE_GEN_BASE_URL:-}" "true" || true
+check_var "IMAGE_GEN_MODEL" "${IMAGE_GEN_MODEL:-}" "true" || true
 
 echo ""
 echo "📝 Checking Optional Environment Variables..."
 echo "----------------------------------------------"
 
 # Optional variables
-check_var "RAG_LLM_MAX_TOKENS" "$RAG_LLM_MAX_TOKENS" "false"
-check_var "IMAGE_GEN_RESPONSE_MIME_TYPE" "$IMAGE_GEN_RESPONSE_MIME_TYPE" "false"
-check_var "GOOGLE_GENAI_BASE_URL" "$GOOGLE_GENAI_BASE_URL" "false"
-check_var "BACKEND_PORT" "$BACKEND_PORT" "false"
-check_var "FRONTEND_PORT" "$FRONTEND_PORT" "false"
-check_var "VITE_API_URL" "$VITE_API_URL" "false"
+check_var "RAG_LLM_MAX_TOKENS" "${RAG_LLM_MAX_TOKENS:-}" "false" || true
+check_var "IMAGE_GEN_RESPONSE_MIME_TYPE" "${IMAGE_GEN_RESPONSE_MIME_TYPE:-}" "false" || true
+check_var "GOOGLE_GENAI_BASE_URL" "${GOOGLE_GENAI_BASE_URL:-}" "false" || true
+check_var "BACKEND_PORT" "${BACKEND_PORT:-}" "false" || true
+check_var "FRONTEND_PORT" "${FRONTEND_PORT:-}" "false" || true
+check_var "VITE_API_URL" "${VITE_API_URL:-}" "false" || true
 
 echo ""
 echo "📁 Checking File System..."
@@ -71,13 +71,13 @@ if [ -f "/app/paper2slides/.env" ]; then
         echo "✅ /app/paper2slides/.env contains required API keys"
     else
         echo "⚠️  WARNING: /app/paper2slides/.env may be missing required keys"
-        ((WARNINGS++))
+        WARNINGS=$((WARNINGS + 1))
     fi
 else
     echo "❌ ERROR: /app/paper2slides/.env does not exist"
     echo "   This file is required for the Paper2Slides Python module"
     echo "   Create it with your API keys or mount it as a volume"
-    ((ERRORS++))
+    ERRORS=$((ERRORS + 1))
 fi
 
 # Check outputs directory
@@ -93,18 +93,21 @@ echo ""
 echo "🔍 Image Generation Provider Check..."
 echo "----------------------------------------------"
 
-if [ "$IMAGE_GEN_PROVIDER" = "google" ]; then
+if [ "${IMAGE_GEN_PROVIDER:-}" = "google" ]; then
     echo "📌 Using Google Gemini for image generation"
-    if [ -z "$GOOGLE_GENAI_BASE_URL" ]; then
+    if [ -z "${GOOGLE_GENAI_BASE_URL:-}" ]; then
         echo "⚠️  WARNING: GOOGLE_GENAI_BASE_URL not set, will use default"
-        ((WARNINGS++))
+        WARNINGS=$((WARNINGS + 1))
     fi
-elif [ "$IMAGE_GEN_PROVIDER" = "openrouter" ]; then
+elif [ "${IMAGE_GEN_PROVIDER:-}" = "openrouter" ]; then
     echo "📌 Using OpenRouter for image generation"
-else
-    echo "⚠️  WARNING: Unknown IMAGE_GEN_PROVIDER: $IMAGE_GEN_PROVIDER"
+elif [ -n "${IMAGE_GEN_PROVIDER:-}" ]; then
+    echo "⚠️  WARNING: Unknown IMAGE_GEN_PROVIDER: ${IMAGE_GEN_PROVIDER}"
     echo "   Expected 'google' or 'openrouter'"
-    ((WARNINGS++))
+    WARNINGS=$((WARNINGS + 1))
+else
+    echo "⚠️  WARNING: IMAGE_GEN_PROVIDER not set"
+    WARNINGS=$((WARNINGS + 1))
 fi
 
 echo ""
