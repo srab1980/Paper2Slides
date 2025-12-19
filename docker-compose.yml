@@ -57,7 +57,3 @@ services:
 networks:
   paper2slides-network:
     driver: bridge
-
-volumes:
-  outputs:
-    driver: local

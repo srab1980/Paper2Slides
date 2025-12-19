@@ -1,9 +1,8 @@
 #!/bin/bash
+set -euo pipefail
 
 # Health check script for Paper2Slides deployment
 # Can be used to verify that the application is running correctly
-
-set -e
 
 BACKEND_URL=${1:-"http://localhost:8000"}
 FRONTEND_URL=${2:-"http://localhost:5173"}

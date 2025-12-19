@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Validation script for Paper2Slides environment configuration
 # This script helps verify that all required environment variables are set
