@@ -213,6 +213,43 @@ echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 2. If needed, change `BACKEND_PORT` or `FRONTEND_PORT` in environment variables
 3. Or let Coolify assign random ports (recommended)
 
+### Issue: Deployment Shows "Degraded" or "Unhealthy" Status
+
+**Symptoms:**
+- Coolify shows deployment status as "degraded (unhealthy) or exited"
+- Container health checks are failing
+- Services appear to be running but marked as unhealthy in Coolify dashboard
+
+**Solution:**
+This issue has been fixed in the latest version. The frontend container's healthcheck was failing because `curl` wasn't installed in the nginx:alpine base image. Update to the latest version:
+
+```bash
+# SSH into your server
+ssh root@your-vps-ip
+
+# Navigate to your app directory
+cd /data/coolify/applications/YOUR_APP_ID
+
+# Pull latest changes
+git pull
+
+# Trigger redeploy in Coolify dashboard
+```
+
+**Verify Health:**
+```bash
+# Check container health status
+docker ps --format "table {{.Names}}\t{{.Status}}"
+
+# Test backend health endpoint
+curl http://localhost:8000/health
+
+# Test frontend
+curl -I http://localhost:80
+```
+
+If both services return successful responses, the deployment is healthy.
+
 ## Updating the Application
 
 ### Automatic Updates (Webhook)

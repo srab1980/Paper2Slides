@@ -236,6 +236,34 @@ docker-compose -f docker/docker-compose.yml down -v
 2. Remove old volumes: `docker volume prune`
 3. Check outputs size: `docker exec paper2slides-backend du -sh /app/outputs`
 
+### Issue: Container Shows as "Unhealthy" or "Degraded"
+
+**Symptoms:**
+- Deployment status shows "degraded (unhealthy) or exited"
+- Container health checks are failing
+- Services appear to be running but marked as unhealthy
+
+**Solution:**
+The frontend container healthcheck requires `curl` to be installed. This has been fixed in the latest version by adding curl to the frontend Dockerfile. If you're using an older version:
+
+1. Update to the latest version: `git pull origin main`
+2. Rebuild containers: `docker-compose -f docker/docker-compose.yml build --no-cache frontend`
+3. Restart: `docker-compose -f docker/docker-compose.yml up -d`
+
+**Manual Health Check:**
+```bash
+# Check backend health
+curl http://localhost:8000/health
+
+# Check frontend (should return HTML)
+curl http://localhost:5173/
+```
+
+**View Container Health Status:**
+```bash
+docker ps --format "table {{.Names}}\t{{.Status}}"
+```
+
 ## Rebuilding Images
 
 If you've made changes to the code:
