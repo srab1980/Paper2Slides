@@ -113,6 +113,7 @@ Examples from <a href="https://arxiv.org/abs/2512.02556">DeepSeek-V3.2: Pushing 
 - [🏗️ Paper2Slides Framework](#%EF%B8%8F-paper2slides-framework)
 - [🔧 Configuration](#%EF%B8%8F-configuration)
 - [📁 Code Structure](#-code-structure)
+- [🚀 Deployment](#-deployment)
 
 ---
 
@@ -355,6 +356,42 @@ Paper2Slides/
 ```
 
 </details>
+
+---
+
+## 🚀 Deployment
+
+### Deploy with Docker Compose
+
+The easiest way to deploy Paper2Slides in production:
+
+```bash
+# Using the root docker-compose.yml
+docker-compose up -d
+
+# Or using the docker/ directory version
+docker-compose -f docker/docker-compose.yml up -d
+```
+
+### Deploy on Hostinger with Coolify
+
+Paper2Slides is ready to deploy on Hostinger using Coolify (self-hosted PaaS):
+
+- **Quick Start**: See [QUICKSTART_COOLIFY.md](./QUICKSTART_COOLIFY.md) for 5-minute deployment
+- **Full Guide**: See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment instructions
+
+**Key Features**:
+- ✅ One-click deployment from GitHub
+- ✅ Automatic SSL/TLS certificates
+- ✅ Built-in health checks
+- ✅ Auto-scaling and monitoring
+- ✅ Environment variable management
+- ✅ Webhook support for CI/CD
+
+**Requirements**:
+- Hostinger VPS (KVM 2+: 2 vCPU, 4GB RAM minimum)
+- Coolify installed
+- API keys (OpenAI/DeepSeek + Image Generation)
 
 ---
 
