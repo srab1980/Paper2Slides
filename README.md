@@ -380,6 +380,8 @@ Paper2Slides is ready to deploy on Hostinger using Coolify (self-hosted PaaS):
 - **Quick Start**: See [QUICKSTART_COOLIFY.md](./QUICKSTART_COOLIFY.md) for 5-minute deployment
 - **Full Guide**: See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment instructions
 
+> **⚠️ IMPORTANT**: When deploying to Coolify, you **MUST** select "Docker Compose" as the build pack, NOT Nixpacks. Paper2Slides is a multi-service application that requires Docker Compose. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for details.
+
 **Key Features**:
 - ✅ One-click deployment from GitHub
 - ✅ Automatic SSL/TLS certificates
