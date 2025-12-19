@@ -56,3 +56,28 @@ Check logs in Coolify dashboard:
 
 - **Automatic**: Enable webhook in Coolify for auto-deployment on Git push
 - **Manual**: Click "Redeploy" in Coolify dashboard
+
+## Helper Scripts
+
+This directory includes helpful scripts:
+
+### validate-env.sh
+
+Validates that all required environment variables are set:
+
+```bash
+# Run inside backend container
+docker exec paper2slides-backend /app/.coolify/validate-env.sh
+```
+
+### healthcheck.sh
+
+Checks if all services are running correctly:
+
+```bash
+# From host machine
+bash .coolify/healthcheck.sh http://your-domain:8000 http://your-domain:5173
+
+# Or with defaults (localhost)
+bash .coolify/healthcheck.sh
+```
