@@ -32,8 +32,10 @@ Create your admin account if it's your first time.
    ```
    Or your fork: `https://github.com/YOUR_USERNAME/Paper2Slides.git`
 4. **Branch**: `main`
-5. **Build Pack**: Select `Docker Compose`
+5. **Build Pack**: Select `Docker Compose` ⚠️ **CRITICAL - Must select Docker Compose, NOT Nixpacks!**
 6. **Docker Compose Location**: `/docker-compose.yml`
+
+> **⚠️ IMPORTANT**: If you select the wrong build pack (Nixpacks), the deployment will fail with an error message. You MUST select "Docker Compose" for Paper2Slides to work correctly. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for more details.
 
 ## Step 3: Set Environment Variables (1 minute)
 

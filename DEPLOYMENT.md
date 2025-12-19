@@ -47,13 +47,15 @@ Wait for installation to complete. Access Coolify at `http://your-vps-ip:8000`
 
 ## Step 4: Deploy from GitHub
 
+> **⚠️ CRITICAL**: You MUST select "Docker Compose" as the build pack. If you select or allow Nixpacks to auto-detect, the deployment will fail. Paper2Slides is a multi-service application that requires Docker Compose. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for details.
+
 ### Option A: Deploy from Public Repository
 
 1. In your project, click **"+ New Resource"** → **"Public Repository"**
 2. Repository URL: `https://github.com/HKUDS/Paper2Slides.git`
    - Or your fork: `https://github.com/YOUR_USERNAME/Paper2Slides.git`
 3. Branch: `main` (or your preferred branch)
-4. Build Pack: Select **"Docker Compose"**
+4. Build Pack: Select **"Docker Compose"** ⚠️ **MUST be Docker Compose, NOT Nixpacks!**
 5. Docker Compose Location: `/docker-compose.yml` (root level)
 
 ### Option B: Deploy from Private Repository
@@ -170,6 +172,25 @@ If using a domain with Coolify:
 - **Backend API**: `https://paper2slides.yourdomain.com/api`
 
 ## Troubleshooting
+
+### Issue: Deployment Shows "Found application type: python" (CRITICAL)
+
+**Problem:** Coolify is using Nixpacks instead of Docker Compose.
+
+**Symptoms:**
+```
+Found application type: python.
+Generating nixpacks configuration
+```
+
+**Solution:**
+1. This is a **configuration error** - Paper2Slides requires Docker Compose
+2. Go to your application settings in Coolify
+3. Change **Build Pack** from `Nixpacks` to `Docker Compose`
+4. Set **Docker Compose Location** to `/docker-compose.yml`
+5. Save and **Redeploy**
+
+📖 See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for detailed explanation.
 
 ### Issue: Build Fails
 

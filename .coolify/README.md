@@ -2,10 +2,18 @@
 
 This directory contains Coolify-specific configuration files for deploying Paper2Slides.
 
+## ⚠️ CRITICAL: Build Pack Configuration
+
+**IMPORTANT**: Paper2Slides MUST be deployed with **Docker Compose**, NOT Nixpacks!
+
+If you see "Found application type: python" in deployment logs, you've misconfigured the build pack.
+
+👉 **[Read the Build Configuration Guide](./IMPORTANT_BUILD_CONFIGURATION.md)** 👈
+
 ## Quick Start with Coolify
 
 1. **Connect Repository**: Use the main repository URL in Coolify
-2. **Build Pack**: Docker Compose
+2. **Build Pack**: **Docker Compose** ⚠️ (MUST select this, NOT Nixpacks!)
 3. **Compose File**: `/docker-compose.yml` (root level)
 4. **Environment Variables**: Set all required API keys in Coolify dashboard
 
