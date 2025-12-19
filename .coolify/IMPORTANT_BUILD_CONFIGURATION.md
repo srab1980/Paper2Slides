@@ -94,7 +94,7 @@ Generating nixpacks configuration
 3. **Review** deployment logs in Coolify dashboard
 4. **Test** health endpoints:
    - Backend: `curl http://your-domain:8000/health`
-   - Frontend: `curl http://your-domain:5173/`
+   - Frontend: `curl http://your-domain:5173/` (or port 80 if using Coolify's domain)
 
 ### Support
 

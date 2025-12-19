@@ -60,6 +60,7 @@ curl http://your-domain:8000/health
 
 # Frontend
 curl http://your-domain:5173/
+# (or port 80 if using Coolify's domain proxy)
 # Expected: 200 OK
 ```
 
