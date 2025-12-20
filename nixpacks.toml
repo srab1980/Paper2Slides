@@ -1,0 +1,66 @@
+# ❌ NIXPACKS IS NOT SUPPORTED FOR PAPER2SLIDES
+#
+# Paper2Slides is a multi-service application that REQUIRES Docker Compose.
+#
+# This nixpacks.toml file exists to prevent accidental Nixpacks deployments
+# and provide clear instructions for fixing the build pack configuration.
+#
+# Why Docker Compose is Required:
+# - Backend service (FastAPI/Python on port 8000)  
+# - Frontend service (React/Nginx on port 80)
+# - Shared networking between services
+# - Volume mounts for data persistence
+#
+# Nixpacks can only build single-service applications and will fail.
+#
+# 🔧 HOW TO FIX THIS IN COOLIFY:
+#
+# 1. Go to your application in Coolify dashboard
+# 2. Click on "General" or "Settings" tab
+# 3. Find "Build Pack" setting
+# 4. Change it to: "Docker Compose"
+# 5. Set "Docker Compose Location" to: /docker-compose.yml
+# 6. Click "Save"
+# 7. Click "Redeploy"
+#
+# 📖 Detailed guides:
+# - Quickstart: QUICKSTART_COOLIFY.md
+# - Full guide: DEPLOYMENT.md  
+# - Build config: .coolify/IMPORTANT_BUILD_CONFIGURATION.md
+#
+# If you continue to see this error, it means Nixpacks is still being used.
+# You MUST manually change to Docker Compose in Coolify settings.
+
+[phases.setup]
+cmds = [
+    "echo '════════════════════════════════════════════════════════════════'",
+    "echo '❌ ERROR: Nixpacks Cannot Build Paper2Slides'",
+    "echo '════════════════════════════════════════════════════════════════'",
+    "echo ''",
+    "echo 'Paper2Slides is a multi-service application that requires'",
+    "echo 'Docker Compose for proper deployment.'",
+    "echo ''",
+    "echo 'Nixpacks can only build single-service apps and will fail.'",
+    "echo ''",
+    "echo '🔧 TO FIX THIS IN COOLIFY:'",
+    "echo '────────────────────────────────────────────────────────────────'",
+    "echo '1. Open your application in Coolify dashboard'",
+    "echo '2. Go to Settings/General tab'",
+    "echo '3. Change Build Pack to: Docker Compose'",
+    "echo '4. Set Docker Compose Location to: /docker-compose.yml'",
+    "echo '5. Save changes'",
+    "echo '6. Click Redeploy button'",
+    "echo ''",
+    "echo '📖 NEED HELP?'",
+    "echo '────────────────────────────────────────────────────────────────'",
+    "echo 'Read these guides in the repository:'",
+    "echo '  • QUICKSTART_COOLIFY.md - Quick deployment guide'",
+    "echo '  • DEPLOYMENT.md - Comprehensive deployment guide'",
+    "echo '  • .coolify/IMPORTANT_BUILD_CONFIGURATION.md - Build config'",
+    "echo ''",
+    "echo '════════════════════════════════════════════════════════════════'",
+    "exit 1"
+]
+
+[start]
+cmd = "exit 1"

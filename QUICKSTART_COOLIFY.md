@@ -32,10 +32,14 @@ Create your admin account if it's your first time.
    ```
    Or your fork: `https://github.com/YOUR_USERNAME/Paper2Slides.git`
 4. **Branch**: `main`
-5. **Build Pack**: Coolify should automatically detect `Docker Compose`. If not, manually select it.
-6. **Docker Compose Location**: `/docker-compose.yml` (should be auto-filled)
+5. **Build Pack**: ⚠️ **IMPORTANT** - You **MUST** select **`Docker Compose`**
+   - Coolify may auto-detect this as "Python" - DO NOT use that
+   - Manually select "Docker Compose" from the dropdown
+6. **Docker Compose Location**: `/docker-compose.yml`
 
-> **📝 NOTE**: Coolify should automatically detect that this is a Docker Compose application. If for any reason it doesn't, make sure to manually select "Docker Compose" as the build pack. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for more details.
+> **⚠️ CRITICAL**: Paper2Slides is a multi-service app (backend + frontend) that **requires Docker Compose**. If Coolify selects "Nixpacks" or "Python", the deployment will fail or show as "degraded/unhealthy". You **MUST** manually select "Docker Compose" as the build pack.
+> 
+> If you accidentally deployed with the wrong build pack, see the [Troubleshooting section](#troubleshooting) below for how to fix it.
 
 ## Step 3: Set Environment Variables (1 minute)
 
@@ -149,16 +153,43 @@ curl http://your-vps-ip:8000/health
 
 ## Troubleshooting
 
-### Build Failed - Coolify Selected Nixpacks?
+### Deployment Shows "Found application type: python" or "Degraded (unhealthy)"
 
-If Coolify auto-detected the wrong build pack (Nixpacks instead of Docker Compose):
+**Problem**: Coolify is using Nixpacks instead of Docker Compose.
 
-**Solution**: 
-1. Go to your application **Settings** or **General** tab in Coolify
-2. Change **Build Pack** to `Docker Compose`
-3. Set **Docker Compose Location** to `/docker-compose.yml`
-4. Click **Save** and **Redeploy**
-5. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for detailed instructions
+**Symptoms:**
+- Deployment logs show "Found application type: python"
+- OR build completes but status shows "Degraded (unhealthy)"
+- OR build fails with "Nixpacks Cannot Build Paper2Slides" error
+
+**Why This Happens:**
+Coolify auto-detected the repository as a Python project and selected Nixpacks build pack. Paper2Slides is a multi-service application (backend + frontend) that requires Docker Compose. Nixpacks can only build single-service apps.
+
+**Solution - Fix Build Pack in Coolify:**
+
+1. **Open Coolify Dashboard** → Go to your Paper2Slides application
+2. **Click "Settings"** or **"General"** tab
+3. **Find "Build Pack"** setting
+4. **Change to**: `Docker Compose` (NOT "Nixpacks" or "Python")
+5. **Set "Docker Compose Location"**: `/docker-compose.yml`
+6. **Click "Save"**
+7. **Click "Redeploy"**
+
+**Verify Success:**
+After redeploying, the logs should show:
+```
+Using Docker Compose
+Building services: backend, frontend
+Successfully built paper2slides-backend
+Successfully built paper2slides-frontend
+Status: Healthy ✅
+```
+
+**Why?** Paper2Slides is a multi-service application (backend + frontend) that requires Docker Compose. Nixpacks only supports single-service deployments.
+
+For detailed explanation, see [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md)
+
+
 
 **Why?** Paper2Slides is a multi-service application (backend + frontend) that requires Docker Compose. Nixpacks only supports single-service deployments.
 

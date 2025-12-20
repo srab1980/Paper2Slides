@@ -180,24 +180,66 @@ If using a domain with Coolify:
 **Problem:** Coolify is using Nixpacks instead of Docker Compose.
 
 **Symptoms:**
+
+**Scenario A - Build Fails:**
 ```
 Found application type: python.
 Generating nixpacks configuration
 ...
-Paper2Slides MUST be deployed with Docker Compose, NOT Nixpacks!
+❌ ERROR: Nixpacks Cannot Build Paper2Slides
 ...
+exit 1
 Building docker image failed.
 ```
 
-**What Happened:**
-Coolify may have auto-detected the repository as a Python/Nixpacks project instead of recognizing it as a Docker Compose application. Paper2Slides is a multi-service application that requires Docker Compose for proper orchestration.
+**Scenario B - Build Succeeds but Shows "Degraded (unhealthy)":**
+```
+Found application type: python.
+Generating nixpacks configuration
+...
+Building docker image completed.
+New container started.
+...
+Status: Degraded (unhealthy)
+```
 
-**Solution:**
-1. This is a **configuration issue** - Paper2Slides requires Docker Compose
-2. Go to your application settings in Coolify
-3. Change **Build Pack** to `Docker Compose`
-4. Set **Docker Compose Location** to `/docker-compose.yml`
-5. Save and **Redeploy**
+**What Happened:**
+
+Coolify auto-detected the repository as a Python/Nixpacks project instead of recognizing it as a Docker Compose application.
+
+- In **Scenario A**: The build fails immediately with an error message (new safety mechanism)
+- In **Scenario B**: Nixpacks builds only a single service (backend), missing the frontend, causing health check failures
+
+Paper2Slides is a multi-service application (backend + frontend) that **requires Docker Compose** for proper orchestration.
+
+**Solution - You MUST Manually Change the Build Pack:**
+
+**Step-by-Step Fix in Coolify:**
+
+1. **Open your application** in Coolify dashboard
+2. **Click on "General"** or **"Settings"** tab (location varies by Coolify version)
+3. **Look for "Build Pack"** setting
+4. **Change Build Pack** from "Nixpacks" to **`Docker Compose`**
+5. **Set "Docker Compose Location"** to **`/docker-compose.yml`**
+6. **Click "Save"** to save the configuration
+7. **Click "Redeploy"** to rebuild with Docker Compose
+
+**After Redeploying with Docker Compose:**
+
+You should see in the deployment logs:
+```
+Using Docker Compose
+Building services: backend, frontend
+Successfully built paper2slides-backend
+Successfully built paper2slides-frontend
+Status: Healthy
+```
+
+**Important Notes:**
+
+- This is a **manual configuration step** - the repository cannot force Coolify to use Docker Compose
+- You only need to do this once - Coolify will remember the build pack setting
+- If you delete and recreate the application, you'll need to set it again
 
 📖 See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for detailed explanation.
 
