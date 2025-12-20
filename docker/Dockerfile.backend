@@ -34,7 +34,11 @@ COPY requirements.txt .
 COPY paper2slides/.env.example paper2slides/.env.example
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --default-timeout=100 -r requirements.txt
+# Optimization flags:
+# --no-cache-dir: Don't cache packages (saves disk space)
+# --prefer-binary: Use binary wheels when available (faster)
+# --default-timeout=100: Increase timeout for large packages
+RUN pip install --no-cache-dir --prefer-binary --default-timeout=100 -r requirements.txt
 
 # Copy application code
 COPY paper2slides/ ./paper2slides/

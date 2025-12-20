@@ -2,7 +2,10 @@
 # RAG Core
 huggingface_hub
 lightrag-hku
-mineru[core]==2.6.4
+# Use base mineru without [core] extra to avoid large CUDA dependencies
+# The [core] extra includes torch with CUDA support (~2.5GB of wheels)
+# Base mineru is sufficient for document parsing functionality
+mineru==2.6.4
 tqdm
 
 # Image Processing
