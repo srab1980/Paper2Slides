@@ -181,7 +181,14 @@ If using a domain with Coolify:
 ```
 Found application type: python.
 Generating nixpacks configuration
+...
+Paper2Slides MUST be deployed with Docker Compose, NOT Nixpacks!
+...
+Building docker image failed.
 ```
+
+**What Happened:**
+Paper2Slides has built-in fail-safe mechanisms (`nixpacks.toml` and `Procfile`) that intentionally cause the build to fail when Nixpacks is detected. This prevents a broken deployment.
 
 **Solution:**
 1. This is a **configuration error** - Paper2Slides requires Docker Compose

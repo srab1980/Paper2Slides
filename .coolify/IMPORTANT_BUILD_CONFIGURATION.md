@@ -6,7 +6,7 @@
 
 ### The Problem
 
-When deploying Paper2Slides to Coolify, you might see this in the logs:
+When deploying Paper2Slides to Coolify, if you select the wrong build pack, you might see this in the logs:
 
 ```
 Found application type: python.
@@ -14,6 +14,8 @@ If you need further customization, please check the documentation of Nixpacks
 ```
 
 This means Coolify is using **Nixpacks** (automatic buildpack detection) instead of **Docker Compose**. 
+
+**With the fail-safe protection**: The build will immediately fail with a clear error message during the install phase, preventing a broken deployment.
 
 ### Why This Fails
 
@@ -73,13 +75,25 @@ Deployment logs will show:
 ```
 Found application type: python.
 Generating nixpacks configuration
+...
+Building docker image started.
+...
+Paper2Slides MUST be deployed with Docker Compose, NOT Nixpacks!
+...
+exit 1
+Building docker image failed.
 ```
+
+The build will fail with a clear error message directing you to use Docker Compose instead.
 
 ### Additional Notes
 
-- The `Procfile` in the repository root will cause deployment to fail intentionally if Nixpacks is used
+- Paper2Slides includes two layers of fail-safe protection to prevent incorrect deployments:
+  1. **Primary**: `nixpacks.toml` - Fails during the install phase with a clear error message
+  2. **Secondary**: `Procfile` - Serves as a backup if the first mechanism is somehow bypassed
 - This prevents confusion from a "successful" deployment that doesn't actually work
-- If you see the error message from `Procfile`, it means you need to switch to Docker Compose
+- If you see an error message about "Paper2Slides MUST be deployed with Docker Compose", it means you need to switch to Docker Compose
+- The build will fail during the install phase with a clear error message explaining what to do
 
 ### Quick Links
 

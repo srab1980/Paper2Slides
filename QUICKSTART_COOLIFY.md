@@ -149,6 +149,15 @@ curl http://your-vps-ip:8000/health
 
 ## Troubleshooting
 
+### Build Failed with "MUST be deployed with Docker Compose"?
+
+**This is intentional!** Paper2Slides has fail-safe protection that prevents incorrect deployments.
+
+**Check**: 
+- Build Pack is set to `Docker Compose` (NOT Nixpacks)
+- Docker Compose Location is `/docker-compose.yml`
+- See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md)
+
 ### Build Failed?
 
 **Check**: 
