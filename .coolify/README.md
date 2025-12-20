@@ -8,6 +8,15 @@ This directory contains Coolify-specific configuration files for deploying Paper
 
 If you see "Found application type: python" in deployment logs, you've misconfigured the build pack.
 
+### Fail-Safe Mechanisms
+
+Paper2Slides includes two fail-safe mechanisms to prevent incorrect deployments:
+
+1. **`nixpacks.toml`**: Forces build failure if Nixpacks is used, with clear error message
+2. **`Procfile`**: Secondary safeguard that exits with error if Nixpacks bypasses the first check
+
+If you encounter a build failure with a message about "MUST be deployed with Docker Compose", it means you need to change your Coolify configuration to use Docker Compose as the build pack.
+
 👉 **[Read the Build Configuration Guide](./IMPORTANT_BUILD_CONFIGURATION.md)** 👈
 
 ## Quick Start with Coolify

@@ -1,0 +1,31 @@
+# Paper2Slides requires Docker Compose, NOT Nixpacks
+# This file ensures deployment fails immediately if Nixpacks is used
+
+[phases.setup]
+nixPkgs = ["bash"]
+
+[phases.install]
+cmds = [
+  "echo '╔════════════════════════════════════════════════════════════════════╗'",
+  "echo '║                            ERROR                                   ║'",
+  "echo '╚════════════════════════════════════════════════════════════════════╝'",
+  "echo ''",
+  "echo 'Paper2Slides MUST be deployed with Docker Compose, NOT Nixpacks!'",
+  "echo ''",
+  "echo 'This is a multi-service application (backend + frontend) that'",
+  "echo 'requires Docker Compose for proper orchestration.'",
+  "echo ''",
+  "echo '📋 To fix this in Coolify:'",
+  "echo '   1. Go to your application settings'",
+  "echo '   2. Change Build Pack to: Docker Compose'",
+  "echo '   3. Set Docker Compose Location to: /docker-compose.yml'",
+  "echo '   4. Save and redeploy'",
+  "echo ''",
+  "echo '📖 See .coolify/IMPORTANT_BUILD_CONFIGURATION.md for details'",
+  "echo '📚 Quick start: QUICKSTART_COOLIFY.md'",
+  "echo ''",
+  "exit 1"
+]
+
+[start]
+cmd = "exit 1"

@@ -73,13 +73,23 @@ Deployment logs will show:
 ```
 Found application type: python.
 Generating nixpacks configuration
+...
+Building docker image started.
+...
+Paper2Slides MUST be deployed with Docker Compose, NOT Nixpacks!
+...
+exit 1
+Building docker image failed.
 ```
+
+The build will fail with a clear error message directing you to use Docker Compose instead.
 
 ### Additional Notes
 
-- The `Procfile` in the repository root will cause deployment to fail intentionally if Nixpacks is used
+- The `nixpacks.toml` and `Procfile` in the repository root will cause deployment to fail intentionally if Nixpacks is used
 - This prevents confusion from a "successful" deployment that doesn't actually work
-- If you see the error message from `Procfile`, it means you need to switch to Docker Compose
+- If you see an error message about "Paper2Slides MUST be deployed with Docker Compose", it means you need to switch to Docker Compose
+- The build will fail during the install phase with a clear error message explaining what to do
 
 ### Quick Links
 
