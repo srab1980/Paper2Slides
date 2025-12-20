@@ -2,6 +2,8 @@
 
 This guide explains how to deploy Paper2Slides on Hostinger using Coolify, a self-hosted Heroku/Netlify alternative.
 
+> **✨ Build Optimization (Dec 2024)**: Paper2Slides now uses CPU-only PyTorch to avoid large CUDA dependencies, reducing build time from 5-10+ minutes to 2-4 minutes and download size from ~2.5GB to ~500MB. This significantly improves deployment reliability on resource-constrained platforms. See [Docker Build Optimization](./.coolify/DOCKER_BUILD_OPTIMIZATION.md) for details.
+
 ## Prerequisites
 
 1. **Hostinger VPS** with root access
