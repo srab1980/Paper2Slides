@@ -33,17 +33,17 @@
 
 [phases.setup]
 cmds = [
-    "echo '════════════════════════════════════════════════════════════════'",
-    "echo '❌ ERROR: Nixpacks Cannot Build Paper2Slides'",
-    "echo '════════════════════════════════════════════════════════════════'",
+    "echo '========================================================================'",
+    "echo 'ERROR: Nixpacks Cannot Build Paper2Slides'",
+    "echo '========================================================================'",
     "echo ''",
     "echo 'Paper2Slides is a multi-service application that requires'",
     "echo 'Docker Compose for proper deployment.'",
     "echo ''",
     "echo 'Nixpacks can only build single-service apps and will fail.'",
     "echo ''",
-    "echo '🔧 TO FIX THIS IN COOLIFY:'",
-    "echo '────────────────────────────────────────────────────────────────'",
+    "echo 'TO FIX THIS IN COOLIFY:'",
+    "echo '------------------------------------------------------------------------'",
     "echo '1. Open your application in Coolify dashboard'",
     "echo '2. Go to Settings/General tab'",
     "echo '3. Change Build Pack to: Docker Compose'",
@@ -51,14 +51,14 @@ cmds = [
     "echo '5. Save changes'",
     "echo '6. Click Redeploy button'",
     "echo ''",
-    "echo '📖 NEED HELP?'",
-    "echo '────────────────────────────────────────────────────────────────'",
+    "echo 'NEED HELP?'",
+    "echo '------------------------------------------------------------------------'",
     "echo 'Read these guides in the repository:'",
-    "echo '  • QUICKSTART_COOLIFY.md - Quick deployment guide'",
-    "echo '  • DEPLOYMENT.md - Comprehensive deployment guide'",
-    "echo '  • .coolify/IMPORTANT_BUILD_CONFIGURATION.md - Build config'",
+    "echo '  * QUICKSTART_COOLIFY.md - Quick deployment guide'",
+    "echo '  * DEPLOYMENT.md - Comprehensive deployment guide'",
+    "echo '  * .coolify/IMPORTANT_BUILD_CONFIGURATION.md - Build config'",
     "echo ''",
-    "echo '════════════════════════════════════════════════════════════════'",
+    "echo '========================================================================'",
     "exit 1"
 ]
 

@@ -97,9 +97,9 @@ exit 1
 
 ## Need Help?
 
-- 📖 [Quick Start Guide](./QUICKSTART_COOLIFY.md) - Step-by-step deployment
-- 📚 [Full Deployment Guide](./DEPLOYMENT.md) - Comprehensive instructions
-- 🔧 [Build Configuration](../.coolify/IMPORTANT_BUILD_CONFIGURATION.md) - Detailed explanation
+- 📖 [Quick Start Guide](../QUICKSTART_COOLIFY.md) - Step-by-step deployment
+- 📚 [Full Deployment Guide](../DEPLOYMENT.md) - Comprehensive instructions
+- 🔧 [Build Configuration](./IMPORTANT_BUILD_CONFIGURATION.md) - Detailed explanation
 
 ## Summary
 
