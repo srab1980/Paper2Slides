@@ -2,7 +2,32 @@
 # RAG Core
 huggingface_hub
 lightrag-hku
-mineru[core]==2.6.4
+
+# MinerU for document parsing
+# Using CPU-only PyTorch to avoid large CUDA dependencies (~2.5GB CUDA vs ~200MB CPU)
+# The --extra-index-url must come before torch packages to ensure CPU-only wheels are used
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.6.0+cpu
+torchvision==0.21.0+cpu
+
+# MinerU pipeline dependencies (required for document parsing backend)
+# These are normally included in mineru[pipeline] but we specify them manually
+# to control the torch version (CPU-only instead of CUDA)
+matplotlib>=3.10,<4
+ultralytics>=8.3.48,<9
+doclayout_yolo==0.0.4
+dill>=0.3.8,<1
+ftfy>=6.3.1,<7
+shapely>=2.0.7,<3
+pyclipper>=1.3.0,<2
+omegaconf>=2.3.0,<3
+# Exclude 4.51.0 due to compatibility issues with mineru pipeline
+transformers>=4.49.0,<5.0.0,!=4.51.0
+onnxruntime>1.17.0
+
+# MinerU base package (without [core] extra to avoid CUDA dependencies)
+mineru==2.6.4
+
 tqdm
 
 # Image Processing
