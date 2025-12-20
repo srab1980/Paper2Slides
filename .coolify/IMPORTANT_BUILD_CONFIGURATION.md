@@ -1,23 +1,12 @@
 # ⚠️ IMPORTANT: Coolify Build Configuration
 
-## Critical Configuration Requirement
+## Automatic Docker Compose Detection
 
-**Paper2Slides MUST be deployed with Docker Compose, NOT Nixpacks!**
+**Paper2Slides should automatically be detected as a Docker Compose application by Coolify.**
 
-### The Problem
+When you deploy Paper2Slides to Coolify, it should automatically detect the `docker-compose.yml` file and use Docker Compose as the build pack. 
 
-When deploying Paper2Slides to Coolify, if you select the wrong build pack, you might see this in the logs:
-
-```
-Found application type: python.
-If you need further customization, please check the documentation of Nixpacks
-```
-
-This means Coolify is using **Nixpacks** (automatic buildpack detection) instead of **Docker Compose**. 
-
-**With the fail-safe protection**: The build will immediately fail with a clear error message during the install phase, preventing a broken deployment.
-
-### Why This Fails
+### Why Docker Compose is Required
 
 Paper2Slides is a **multi-service application** that requires:
 1. **Backend service** (FastAPI/Python) 
@@ -25,34 +14,43 @@ Paper2Slides is a **multi-service application** that requires:
 3. **Shared networking** between services
 4. **Volume mounts** for data persistence
 
-Nixpacks can only build single-service applications. It will detect Paper2Slides as a Python app, build only the backend, and fail to set up the frontend properly.
+Docker Compose is the only supported deployment method because it properly orchestrates all these services.
 
-### The Solution
+### Expected Behavior
 
 #### When Creating the Application in Coolify:
 
+Coolify should automatically:
+1. Detect the `docker-compose.yml` file in the repository root
+2. Select **Docker Compose** as the build pack
+3. Set Docker Compose Location to `/docker-compose.yml`
+
+You should see in the deployment logs:
+```
+Using Docker Compose
+Building services: backend, frontend
+Successfully built paper2slides-backend
+Successfully built paper2slides-frontend
+```
+
+### If Auto-Detection Doesn't Work
+
+If Coolify doesn't automatically detect Docker Compose, you can manually configure it:
+
+#### When Creating the Application:
+
 1. **Click**: `+ New Resource` → `Public Repository` or `Private Repository`
 2. **Enter** your repository URL
-3. **CRITICAL STEP**: When asked to select a build pack, choose: **`Docker Compose`**
-4. **Set** Docker Compose Location to: `/docker-compose.yml`
-
-#### Diagram of Correct Configuration:
-
-```
-Coolify Application Settings
-├─ Build Pack: [Docker Compose] ✓ ← MUST SELECT THIS
-│
-├─ Docker Compose Location: /docker-compose.yml
-│
-└─ Branch: main
-```
+3. **Select Build Pack**: Choose **`Docker Compose`**
+4. **Docker Compose Location**: Set to `/docker-compose.yml`
+5. **Branch**: `main`
 
 #### If You Already Created the Application:
 
 1. Go to your application in Coolify dashboard
 2. Click **Settings** or **General** tab
 3. Look for **Build Pack** setting
-4. Change it from `Nixpacks` to `Docker Compose`
+4. Change it to `Docker Compose`
 5. Set **Docker Compose Location** to `/docker-compose.yml`
 6. Click **Save**
 7. **Redeploy** the application
@@ -69,31 +67,15 @@ Successfully built paper2slides-backend
 Successfully built paper2slides-frontend
 ```
 
-#### ❌ Wrong Configuration (Nixpacks):
+#### ❌ Incorrect Configuration (Nixpacks):
 
-Deployment logs will show:
-```
-Found application type: python.
-Generating nixpacks configuration
-...
-Building docker image started.
-...
-Paper2Slides MUST be deployed with Docker Compose, NOT Nixpacks!
-...
-exit 1
-Building docker image failed.
-```
+If Coolify tries to use Nixpacks, the deployment will fail because Paper2Slides requires multiple services (backend + frontend) that can only be orchestrated with Docker Compose.
 
-The build will fail with a clear error message directing you to use Docker Compose instead.
+### Why This Matters
 
-### Additional Notes
-
-- Paper2Slides includes two layers of fail-safe protection to prevent incorrect deployments:
-  1. **Primary**: `nixpacks.toml` - Fails during the install phase with a clear error message
-  2. **Secondary**: `Procfile` - Serves as a backup if the first mechanism is somehow bypassed
-- This prevents confusion from a "successful" deployment that doesn't actually work
-- If you see an error message about "Paper2Slides MUST be deployed with Docker Compose", it means you need to switch to Docker Compose
-- The build will fail during the install phase with a clear error message explaining what to do
+- **Docker Compose** properly orchestrates multi-service applications
+- **Nixpacks** is designed for single-service applications and cannot properly deploy Paper2Slides
+- The repository structure (with `docker-compose.yml` as the only deployment configuration) should trigger automatic Docker Compose detection in Coolify
 
 ### Quick Links
 

@@ -32,10 +32,10 @@ Create your admin account if it's your first time.
    ```
    Or your fork: `https://github.com/YOUR_USERNAME/Paper2Slides.git`
 4. **Branch**: `main`
-5. **Build Pack**: Select `Docker Compose` ⚠️ **CRITICAL - Must select Docker Compose, NOT Nixpacks!**
-6. **Docker Compose Location**: `/docker-compose.yml`
+5. **Build Pack**: Coolify should automatically detect `Docker Compose`. If not, manually select it.
+6. **Docker Compose Location**: `/docker-compose.yml` (should be auto-filled)
 
-> **⚠️ IMPORTANT**: If you select the wrong build pack (Nixpacks), the deployment will fail with an error message. You MUST select "Docker Compose" for Paper2Slides to work correctly. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for more details.
+> **📝 NOTE**: Coolify should automatically detect that this is a Docker Compose application. If for any reason it doesn't, make sure to manually select "Docker Compose" as the build pack. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for more details.
 
 ## Step 3: Set Environment Variables (1 minute)
 
@@ -149,14 +149,18 @@ curl http://your-vps-ip:8000/health
 
 ## Troubleshooting
 
-### Build Failed with "MUST be deployed with Docker Compose"?
+### Build Failed - Coolify Selected Nixpacks?
 
-**This is intentional!** Paper2Slides has fail-safe protection that prevents incorrect deployments.
+If Coolify auto-detected the wrong build pack (Nixpacks instead of Docker Compose):
 
-**Check**: 
-- Build Pack is set to `Docker Compose` (NOT Nixpacks)
-- Docker Compose Location is `/docker-compose.yml`
-- See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md)
+**Solution**: 
+1. Go to your application **Settings** or **General** tab in Coolify
+2. Change **Build Pack** to `Docker Compose`
+3. Set **Docker Compose Location** to `/docker-compose.yml`
+4. Click **Save** and **Redeploy**
+5. See [.coolify/IMPORTANT_BUILD_CONFIGURATION.md](./.coolify/IMPORTANT_BUILD_CONFIGURATION.md) for detailed instructions
+
+**Why?** Paper2Slides is a multi-service application (backend + frontend) that requires Docker Compose. Nixpacks only supports single-service deployments.
 
 ### Build Failed?
 

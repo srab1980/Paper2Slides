@@ -188,12 +188,12 @@ Building docker image failed.
 ```
 
 **What Happened:**
-Paper2Slides has built-in fail-safe mechanisms (`nixpacks.toml` and `Procfile`) that intentionally cause the build to fail when Nixpacks is detected. This prevents a broken deployment.
+Coolify may have auto-detected the repository as a Python/Nixpacks project instead of recognizing it as a Docker Compose application. Paper2Slides is a multi-service application that requires Docker Compose for proper orchestration.
 
 **Solution:**
-1. This is a **configuration error** - Paper2Slides requires Docker Compose
+1. This is a **configuration issue** - Paper2Slides requires Docker Compose
 2. Go to your application settings in Coolify
-3. Change **Build Pack** from `Nixpacks` to `Docker Compose`
+3. Change **Build Pack** to `Docker Compose`
 4. Set **Docker Compose Location** to `/docker-compose.yml`
 5. Save and **Redeploy**
 
