@@ -4,7 +4,7 @@
 
 The Docker build was failing during `pip install -r requirements.txt` due to downloading large CUDA-enabled PyTorch wheels (~2.5GB total):
 
-- `torch-2.9.1-cp312-...whl` (899.7 MB)
+- `torch-2.6.0+cu118-cp312-...whl` (~900 MB)
 - `nvidia_cublas_cu12-12.8.4.1-...whl` (594.3 MB)
 - `nvidia_cudnn_cu12-9.10.2.21-...whl` (706.8 MB)
 - Plus additional CUDA libraries
