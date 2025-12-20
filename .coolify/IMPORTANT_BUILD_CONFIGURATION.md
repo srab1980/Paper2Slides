@@ -88,7 +88,9 @@ The build will fail with a clear error message directing you to use Docker Compo
 
 ### Additional Notes
 
-- The `nixpacks.toml` and `Procfile` in the repository root will cause deployment to fail intentionally if Nixpacks is used
+- Paper2Slides includes two layers of fail-safe protection to prevent incorrect deployments:
+  1. **Primary**: `nixpacks.toml` - Fails during the install phase with a clear error message
+  2. **Secondary**: `Procfile` - Serves as a backup if the first mechanism is somehow bypassed
 - This prevents confusion from a "successful" deployment that doesn't actually work
 - If you see an error message about "Paper2Slides MUST be deployed with Docker Compose", it means you need to switch to Docker Compose
 - The build will fail during the install phase with a clear error message explaining what to do

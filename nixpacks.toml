@@ -26,6 +26,3 @@ cmds = [
   "echo ''",
   "exit 1"
 ]
-
-[start]
-cmd = "exit 1"
