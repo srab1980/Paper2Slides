@@ -1,61 +1,54 @@
 # ⚠️ IMPORTANT: Coolify Build Configuration
 
-## Automatic Docker Compose Detection
+## You MUST Manually Select Docker Compose
 
-**Paper2Slides should automatically be detected as a Docker Compose application by Coolify.**
+**Paper2Slides requires Docker Compose as the build pack in Coolify.**
 
-When you deploy Paper2Slides to Coolify, it should automatically detect the `docker-compose.yml` file and use Docker Compose as the build pack. 
+### The Problem
+
+When creating a new application in Coolify, it may auto-detect Paper2Slides as a "Python" project and select "Nixpacks" as the build pack. This is **incorrect** and will cause deployment failures or "degraded (unhealthy)" status.
 
 ### Why Docker Compose is Required
 
 Paper2Slides is a **multi-service application** that requires:
-1. **Backend service** (FastAPI/Python) 
-2. **Frontend service** (React/Nginx)
+1. **Backend service** (FastAPI/Python on port 8000)
+2. **Frontend service** (React/Nginx on port 80)
 3. **Shared networking** between services
 4. **Volume mounts** for data persistence
 
-Docker Compose is the only supported deployment method because it properly orchestrates all these services.
+Docker Compose is the only supported deployment method because it properly orchestrates all these services. Nixpacks can only build single-service applications.
 
-### Expected Behavior
+### Manual Configuration Required
 
-#### When Creating the Application in Coolify:
-
-Coolify should automatically:
-1. Detect the `docker-compose.yml` file in the repository root
-2. Select **Docker Compose** as the build pack
-3. Set Docker Compose Location to `/docker-compose.yml`
-
-You should see in the deployment logs:
-```
-Using Docker Compose
-Building services: backend, frontend
-Successfully built paper2slides-backend
-Successfully built paper2slides-frontend
-```
-
-### If Auto-Detection Doesn't Work
-
-If Coolify doesn't automatically detect Docker Compose, you can manually configure it:
-
-#### When Creating the Application:
+**When Creating the Application:**
 
 1. **Click**: `+ New Resource` → `Public Repository` or `Private Repository`
 2. **Enter** your repository URL
-3. **Select Build Pack**: Choose **`Docker Compose`**
+3. **⚠️ Build Pack**: Manually select **`Docker Compose`** (NOT "Nixpacks" or "Python")
 4. **Docker Compose Location**: Set to `/docker-compose.yml`
 5. **Branch**: `main`
 
-#### If You Already Created the Application:
+**If You Already Created the Application with Wrong Build Pack:**
 
 1. Go to your application in Coolify dashboard
 2. Click **Settings** or **General** tab
 3. Look for **Build Pack** setting
-4. Change it to `Docker Compose`
+4. Change it from "Nixpacks" to **`Docker Compose`**
 5. Set **Docker Compose Location** to `/docker-compose.yml`
 6. Click **Save**
-7. **Redeploy** the application
+7. Click **Redeploy** button
 
-### How to Verify Correct Configuration
+### How to Identify the Problem
+
+#### ❌ Wrong Configuration (Nixpacks):
+
+Deployment logs show:
+```
+Found application type: python.
+Generating nixpacks configuration
+```
+
+**Result**: Either build fails with error, OR build succeeds but shows "Degraded (unhealthy)" status.
 
 #### ✅ Correct Configuration (Docker Compose):
 
@@ -67,30 +60,41 @@ Successfully built paper2slides-backend
 Successfully built paper2slides-frontend
 ```
 
-#### ❌ Incorrect Configuration (Nixpacks):
+**Result**: Both services running, status shows "Healthy" ✅
 
-If Coolify tries to use Nixpacks, the deployment will fail because Paper2Slides requires multiple services (backend + frontend) that can only be orchestrated with Docker Compose.
+### Why Auto-Detection May Fail
 
-### Why This Matters
+Coolify's auto-detection looks at repository files:
+- Sees `requirements.txt` → detects "Python"
+- Sees `package.json` → detects "Node"
+- Sees `docker-compose.yml` → detects "Docker Compose"
 
-- **Docker Compose** properly orchestrates multi-service applications
-- **Nixpacks** is designed for single-service applications and cannot properly deploy Paper2Slides
-- The repository structure (with `docker-compose.yml` as the only deployment configuration) should trigger automatic Docker Compose detection in Coolify
+Some versions of Coolify prioritize language detection over Docker Compose, causing incorrect auto-selection.
+
+### Safety Mechanisms in This Repository
+
+To help prevent incorrect deployments, this repository includes:
+
+1. **nixpacks.toml** - Fails immediately with clear error if Nixpacks is used
+2. **Procfile** - Shows error message if Procfile deployment is attempted
+3. **Clear documentation** - Multiple guides explaining the requirement
+
+However, these are **fail-safes only** - you still **must manually select Docker Compose** in Coolify.
 
 ### Quick Links
 
 - 📚 [Quick Start Guide](../QUICKSTART_COOLIFY.md) - Step-by-step deployment
 - 📖 [Full Deployment Guide](../DEPLOYMENT.md) - Comprehensive instructions
-- ✅ [Deployment Checklist](./CHECKLIST.md) - Verify all steps
+- ✅ [Deployment Checklist](./.coolify/CHECKLIST.md) - Verify all steps
 
 ### Still Having Issues?
 
-1. **Check** that both backend and frontend containers are running: `docker ps`
-2. **Verify** Docker Compose config is valid: `docker compose config`
-3. **Review** deployment logs in Coolify dashboard
-4. **Test** health endpoints:
-   - Backend: `curl http://your-domain:8000/health`
-   - Frontend: `curl http://your-domain:5173/` (or port 80 if using Coolify's domain)
+1. **Verify Build Pack** is set to "Docker Compose" in Coolify settings
+2. **Check deployment logs** - should say "Using Docker Compose"
+3. **Verify both services running**: `docker ps` should show both backend and frontend
+4. **Test health endpoints**:
+   - Backend: `curl http://localhost:8000/health`
+   - Frontend: `curl http://localhost:80/`
 
 ### Support
 
@@ -100,4 +104,4 @@ If Coolify tries to use Nixpacks, the deployment will fail because Paper2Slides 
 
 ---
 
-**Remember**: Always use **Docker Compose** as the build pack in Coolify! 🚀
+**Remember**: You **MUST** manually select **Docker Compose** as the build pack in Coolify! 🚀
