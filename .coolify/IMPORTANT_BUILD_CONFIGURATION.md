@@ -6,7 +6,7 @@
 
 ### The Problem
 
-When deploying Paper2Slides to Coolify, you might see this in the logs:
+When deploying Paper2Slides to Coolify, if you select the wrong build pack, you might see this in the logs:
 
 ```
 Found application type: python.
@@ -14,6 +14,8 @@ If you need further customization, please check the documentation of Nixpacks
 ```
 
 This means Coolify is using **Nixpacks** (automatic buildpack detection) instead of **Docker Compose**. 
+
+**With the fail-safe protection**: The build will immediately fail with a clear error message during the install phase, preventing a broken deployment.
 
 ### Why This Fails
 
